@@ -41,15 +41,21 @@ public class Session {
 
 	public String getRealName() {
 		String result = this.rawWithAgent("https://api.simplyrin.net/Hypixel-API/rawWithUniqueId.php?uuid=" + this.uuid.toString().replace("-", ""));
-		JsonLoader jsonLoader = new JsonLoader(result);
-		if (jsonLoader.has("player")) {
-			return jsonLoader.getJsonObject("player").getString("displayname");
+		try {
+			JsonLoader jsonLoader = new JsonLoader(result);
+			if (jsonLoader.has("player")) {
+				return jsonLoader.getJsonObject("player").getString("displayname");
+			}
+		} catch (Exception e) {
 		}
 		return null;
 	}
 
 	public String getDisplayName() {
 		String name = this.getRealName();
+		if (name == null) {
+			return null;
+		}
 		String result = this.rawWithAgent("https://api.simplyrin.net/Hypixel-API/prefix.php?name=" + name);
 		JsonLoader jsonLoader = new JsonLoader(result);
 		String prefix = "";

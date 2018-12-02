@@ -50,7 +50,7 @@ public class CommandAntiNick extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/" + this.getCommandName() + " <player>";
+		return "/" + this.getCommandName() + " <player|check-all>";
 	}
 
 	@Override
@@ -67,6 +67,25 @@ public class CommandAntiNick extends CommandBase {
 	public void processCommand(ICommandSender sender, String[] args) {
 		if (args.length > 0) {
 			Minecraft mc = Minecraft.getMinecraft();
+
+			if (args[0].equalsIgnoreCase("check-all")) {
+				this.sendMessage("§lChecking all players...");
+				for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
+					GameProfile gameProfile = networkPlayerInfo.getGameProfile();
+					ThreadPool.run(() -> {
+						Session session = new Session(gameProfile.getId());
+						String name = session.getRealName();
+						if (name == null) {
+							this.sendMessage(gameProfile.getName() + "&a is nicked!");
+						} else {
+							if (!gameProfile.getName().equals(name)) {
+								this.sendMessage(gameProfile.getName() + "&a is nicked! Real name is &b" + session.getDisplayName() + "&a!");
+							}
+						}
+					});
+				}
+				return;
+			}
 
 			for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
 				if (networkPlayerInfo.getGameProfile().getName().equalsIgnoreCase(args[0])) {

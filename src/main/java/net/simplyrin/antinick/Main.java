@@ -29,7 +29,7 @@ import net.simplyrin.antinick.command.CommandAntiNick;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@Mod(modid = "AntiNick", version = "1.0")
+@Mod(modid = "AntiNick", version = "1.1")
 public class Main {
 
 	@EventHandler
