@@ -79,7 +79,7 @@ public class CommandAntiNick extends CommandBase {
 					multiProcess.addProcess(() -> {
 						Session session = new Session(gameProfile.getId());
 						String name = session.getRealName();
-						if (name == null) {
+						if (name == null || !name.equals(gameProfile.getName())) {
 							this.sendMessage(gameProfile.getName() + "&a is nicked!");
 						} else {
 							if (!gameProfile.getName().equals(name)) {
