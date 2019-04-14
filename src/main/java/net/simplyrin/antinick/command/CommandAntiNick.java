@@ -12,6 +12,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.simplyrin.antinick.Session;
 import net.simplyrin.antinick.ThreadPool;
+import net.simplyrin.antinick.utils.MultiProcess;
 
 /**
  * Created by SimplyRin on 2018/09/07.
@@ -70,9 +71,12 @@ public class CommandAntiNick extends CommandBase {
 
 			if (args[0].equalsIgnoreCase("check-all")) {
 				this.sendMessage("§lChecking all players...");
+
+				MultiProcess multiProcess = new MultiProcess();
+
 				for (NetworkPlayerInfo networkPlayerInfo : mc.getNetHandler().getPlayerInfoMap()) {
 					GameProfile gameProfile = networkPlayerInfo.getGameProfile();
-					ThreadPool.run(() -> {
+					multiProcess.addProcess(() -> {
 						Session session = new Session(gameProfile.getId());
 						String name = session.getRealName();
 						if (name == null) {
@@ -84,6 +88,9 @@ public class CommandAntiNick extends CommandBase {
 						}
 					});
 				}
+
+				multiProcess.setFinishedTask(() -> this.sendMessage("&aChecked all users!"));
+				multiProcess.start();
 				return;
 			}
 
