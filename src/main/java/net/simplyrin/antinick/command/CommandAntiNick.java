@@ -70,7 +70,7 @@ public class CommandAntiNick extends CommandBase {
 			Minecraft mc = Minecraft.getMinecraft();
 
 			if (args[0].equalsIgnoreCase("check-all")) {
-				this.sendMessage("§lChecking all players...");
+				this.sendMessage("&f&lChecking all players...");
 
 				MultiProcess multiProcess = new MultiProcess();
 
@@ -89,7 +89,7 @@ public class CommandAntiNick extends CommandBase {
 					});
 				}
 
-				multiProcess.setFinishedTask(() -> this.sendMessage("&aChecked all users!"));
+				multiProcess.setFinishedTask(() -> this.sendMessage("&a&lChecked all users!"));
 				multiProcess.start();
 				return;
 			}
